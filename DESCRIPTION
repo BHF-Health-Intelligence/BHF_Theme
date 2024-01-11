@@ -1,4 +1,10 @@
 Package: BHFR
 Type: Package
-Title: BHF Health Intelligence Functions
-Version: 0.0.1.0
+Title: BHF Theming Routines
+Version: 0.1.0
+Author: BHF Health Intelligence
+Maintainer: Daniel O'Connell <oconnelld@bhf.org.uk>
+Description: Contains the ggplot2 theming routines used by HI for BHF
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
