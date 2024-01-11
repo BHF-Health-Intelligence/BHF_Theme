@@ -1,2 +1,2 @@
 # BHF_Theme
-Contains the custom BHF theming routines 
+Contains the custom BHF theme package
