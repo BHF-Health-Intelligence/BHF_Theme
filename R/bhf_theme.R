@@ -1,4 +1,5 @@
 
+#This is the BHF ggplot script. It contains theme functions for ggplot, sets colours, fonts, etc 
 library(magrittr)
 library(dplyr)
 library(tidyr)
@@ -14,16 +15,18 @@ library(patchwork)
 library(chron)
 library(readODS)
 library(lubridate)
-#########RUN BHF STYLE FUNCTIONS###########
 
-##ADD FONTS##
-
+#Check if the fonts files are included in the installation 
+if (exists("inst/fonts")){
 font_add("bhf_beats_bold", "fonts/BHFBeats-Bold.otf")
 font_add("bhf_beats_light", "fonts/BHFBeats-Light.otf")
 font_add("bhf_beats_reg", "fonts/BHFBeats-Regular.otf")
 font_add("bhf_ginger_bold", "fonts/F37Ginger-Bold.otf")
 font_add("bhf_ginger_light", "fonts/F37Ginger-Light.otf")
 font_add("bhf_ginger_reg", "fonts/F37Ginger-Regular.otf")
+}else{print("No fonts found, they can supplied after installation")}
+
+
 
 #I don't know what this is for:
 #showtext_auto()
