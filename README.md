@@ -30,3 +30,10 @@ There are 6 different palettes in this package:
 5)  `bhf imd quintiles` contains 5 sequential colours from BHF colour brand "Bright red" to "Light blue"
 6)  `bhf map colours` contains 6 sequential colours from BHF colour brand "Light blue" to "Dark red" ideal for choropleth maps
 
+# Example code
+ggplot(df, aes(x=x, y = y, fill = variable)) +
+  geom_bar(stat="identity", show.legend = TRUE) +
+  xlab("x") +
+  ylab("y") +
+  scale_fill_bhf(palette = "bhf colours") +
+  bhf_bar_plot()
