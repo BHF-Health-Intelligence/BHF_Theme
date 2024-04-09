@@ -23,7 +23,7 @@ font_add("bhf_beats_reg", "fonts/BHFBeats-Regular.otf")
 font_add("bhf_ginger_bold", "fonts/F37Ginger-Bold.otf")
 font_add("bhf_ginger_light", "fonts/F37Ginger-Light.otf")
 font_add("bhf_ginger_reg", "fonts/F37Ginger-Regular.otf")
-}else{print("No fonts found, they can supplied after installation")}
+}else{print("No fonts found, they can be supplied after installation")}
 
 
 t_font <- list(family = "bhf_ginger_reg", size = 14)
