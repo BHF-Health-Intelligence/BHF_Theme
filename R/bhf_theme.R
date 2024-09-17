@@ -310,7 +310,7 @@ bhf_theme(textsize=textsize, line=TRUE)
 }
 
 
-#' bhf_line_plot - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
+#' bhf_line_plot_grid - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
 #' Equivalent to bhf_theme(line=TRUE, grid=TRUE)
 #'
 #' @param textsize Size of text (defaults to 12)
@@ -327,7 +327,7 @@ bhf_theme(textsize=textsize, line=TRUE, grid=TRUE)
 }
 
 
-#' bhf_line_plot - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
+#' bhf_theme_map - wrapper function for bhf_theme to support legacy bhf_theme_map function
 #' Equivalent to bhf_theme_map(line=TRUE, grid=TRUE)
 #'
 #' @param textsize Size of text (defaults to 12)

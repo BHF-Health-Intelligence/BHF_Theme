@@ -2,7 +2,7 @@
 % Please edit documentation in R/bhf_theme.R
 \name{bhf_line_plot_grid}
 \alias{bhf_line_plot_grid}
-\title{bhf_line_plot - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
+\title{bhf_line_plot_grid - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
 Equivalent to bhf_theme(line=TRUE, grid=TRUE)}
 \usage{
 bhf_line_plot_grid(textsize = 12)
@@ -20,7 +20,7 @@ bhf_line_plot_grid(textsize = 12)
 ggplot2 style object
 }
 \description{
-bhf_line_plot - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
+bhf_line_plot_grid - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
 Equivalent to bhf_theme(line=TRUE, grid=TRUE)
 }
 \examples{

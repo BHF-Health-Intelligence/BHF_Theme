@@ -2,7 +2,7 @@
 % Please edit documentation in R/bhf_theme.R
 \name{bhf_theme_map}
 \alias{bhf_theme_map}
-\title{bhf_line_plot - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
+\title{bhf_theme_map - wrapper function for bhf_theme to support legacy bhf_theme_map function
 Equivalent to bhf_theme_map(line=TRUE, grid=TRUE)}
 \usage{
 bhf_theme_map(textsize = 12)
@@ -20,7 +20,7 @@ bhf_theme_map(textsize = 12)
 ggplot2 style object
 }
 \description{
-bhf_line_plot - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
+bhf_theme_map - wrapper function for bhf_theme to support legacy bhf_theme_map function
 Equivalent to bhf_theme_map(line=TRUE, grid=TRUE)
 }
 \examples{
