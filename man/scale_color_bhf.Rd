@@ -4,10 +4,10 @@
 \alias{scale_color_bhf}
 \title{BHF Colour Scale}
 \usage{
-scale_color_bhf(palette = "reds", discrete = TRUE, reverse = FALSE, ...)
+scale_color_bhf(palette = "bhf colours", discrete = TRUE, reverse = FALSE, ...)
 }
 \arguments{
-\item{palette}{Colour palette - defaults to reds}
+\item{palette}{Colour palette - defaults to BHF standard colours}
 
 \item{discrete}{Ensures the scale is discrete/continuous}
 
@@ -17,8 +17,8 @@ scale_color_bhf(palette = "reds", discrete = TRUE, reverse = FALSE, ...)
 Palette object
 }
 \description{
-Get a BHF colour scale
+Create a BHF colour scale
 }
 \examples{
-temp1 <- scale_color_bhf("reds",reverse=TRUE)
+temp1 <- scale_color_bhf("reds", reverse = TRUE)
 }

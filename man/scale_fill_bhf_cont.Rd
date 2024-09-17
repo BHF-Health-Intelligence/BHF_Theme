@@ -4,10 +4,15 @@
 \alias{scale_fill_bhf_cont}
 \title{BHF Colour Fill Continuous}
 \usage{
-scale_fill_bhf_cont(palette = "reds", discrete = FALSE, reverse = TRUE, ...)
+scale_fill_bhf_cont(
+  palette = "bhf colours",
+  discrete = FALSE,
+  reverse = TRUE,
+  ...
+)
 }
 \arguments{
-\item{palette}{Colour palette - defaults to reds}
+\item{palette}{Colour palette - defaults to BHF standard colours}
 
 \item{discrete}{Ensures the scale is discrete/continuous}
 
@@ -17,8 +22,8 @@ scale_fill_bhf_cont(palette = "reds", discrete = FALSE, reverse = TRUE, ...)
 Colour fill object
 }
 \description{
-Get a BHF colour fill
+Create a BHF colour fill
 }
 \examples{
-scale <- scale_fill_bhf_cont("reds",reverse=TRUE)
+scale <- scale_fill_bhf_cont("reds", reverse = TRUE)
 }
