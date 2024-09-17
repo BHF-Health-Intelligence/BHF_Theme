@@ -2,7 +2,7 @@
 % Please edit documentation in R/bhf_theme.R
 \name{bhf_theme}
 \alias{bhf_theme}
-\title{bhf_theme - The BHF plotting theme}
+\title{bhf_theme - The main BHF plotting theme}
 \usage{
 bhf_theme(textsize = 12, grid = FALSE, line = TRUE, map = FALSE)
 }
@@ -19,7 +19,7 @@ bhf_theme(textsize = 12, grid = FALSE, line = TRUE, map = FALSE)
 ggplot2 style object
 }
 \description{
-bhf_theme - The BHF plotting theme
+bhf_theme - The main BHF plotting theme
 }
 \examples{
 theme <- bhf_style(line=TRUE, grid=FALSE reverse = TRUE)

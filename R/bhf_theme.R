@@ -101,7 +101,7 @@ bhf_palette <- function(palette = "bhf colours", reverse = FALSE, ...) {
 #' @param discrete Ensures the scale is discrete/continuous
 #' @return Palette object
 #' @examples
-#' temp1 <- scale_color_bhf("bhf colours", reverse = TRUE)
+#' temp1 <- scale_colour_bhf("bhf colours", reverse = TRUE)
 #' @export
 scale_colour_bhf <- function(palette = "bhf colours", discrete = TRUE, reverse = FALSE, ...) {
 
@@ -113,6 +113,7 @@ scale_colour_bhf <- function(palette = "bhf colours", discrete = TRUE, reverse =
     ggplot2::scale_color_gradientn(colours = pal(256), ...)
   }
 }
+
 
 #' BHF Colour Fill
 #'
@@ -155,8 +156,6 @@ scale_fill_bhf_cont <- function(palette = "bhf colours", discrete = FALSE, rever
     ggplot2::scale_fill_gradientn(colours = pal(256), ...)
   }
 }
-
-
 
 
 #' bhf_theme - The main BHF plotting theme
@@ -257,271 +256,99 @@ bhf_theme <- function(textsize = 12, grid=FALSE,line=TRUE,map=FALSE) {
   theme
 }
 
-#For backwards compatibility, create wrappers for the original functions
 
+#For backwards compatibility, create wrappers for the original theme functions
+
+#' bhf_bar_plot - wrapper function for bhf_theme to support legacy bhf_bar_plot function.
+#' Equivalent to bhf_theme(line=TRUE,grid=FALSE)
+#' 
+#' @param textsize Size of text (defaults to 12)
+#' @param line Boolean for whether line elements should be drawn
+#' @param grid Boolean for whether grid lines should be drawn 
+#' @param map Boolean for a map object 
+#' @return ggplot2 style object
+#'
+#' @examples
+#' theme <- bhf_bar_plot(line=TRUE, grid=FALSE)
+#' @export
 bhf_bar_plot=function(textsize=12){
 bhf_theme(textsize=textsize, line=TRUE, grid=FALSE)
 }
 
+
+#' bhf_bar_plot_grid - wrapper function for bhf_theme to support legacy bhf_bar_plot_grid function
+#' Equivalent to bhf_theme(grid=TRUE)
+#'
+#' @param textsize Size of text (defaults to 12)
+#' @param line Boolean for whether line elements should be drawn
+#' @param grid Boolean for whether grid lines should be drawn 
+#' @param map Boolean for a map object 
+#' @return ggplot2 style object
+#'
+#' @examples
+#' theme <- bhf_bar_plot_grid(grid=TRUE)
+#' @export
 bhf_bar_plot_grid=function(textsize=12){
 bhf_theme(textsize=textsize, grid=TRUE)
 }
 
+
+#' bhf_line_plot - wrapper function for bhf_theme to support legacy bhf_line_plot function
+#' Equivalent to bhf_theme(line=TRUE)
+#'
+#' @param textsize Size of text (defaults to 12)
+#' @param line Boolean for whether line elements should be drawn
+#' @param grid Boolean for whether grid lines should be drawn 
+#' @param map Boolean for a map object 
+#' @return ggplot2 style object
+#'
+#' @examples
+#' theme <- bhf_line_plot(grid=TRUE)
+#' @export
 bhf_line_plot=function(textsize=12){
 bhf_theme(textsize=textsize, line=TRUE)
 }
 
+
+#' bhf_line_plot - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
+#' Equivalent to bhf_theme(line=TRUE, grid=TRUE)
+#'
+#' @param textsize Size of text (defaults to 12)
+#' @param line Boolean for whether line elements should be drawn
+#' @param grid Boolean for whether grid lines should be drawn 
+#' @param map Boolean for a map object 
+#' @return ggplot2 style object
+#'
+#' @examples
+#' theme <- bhf_line_plot_grid(grid=TRUE)
+#' @export
 bhf_line_plot_grid=function(textsize=12){
 bhf_theme(textsize=textsize, line=TRUE, grid=TRUE)
 }
 
+
+#' bhf_line_plot - wrapper function for bhf_theme to support legacy bhf_line_plot_grid function
+#' Equivalent to bhf_theme_map(line=TRUE, grid=TRUE)
+#'
+#' @param textsize Size of text (defaults to 12)
+#' @param line Boolean for whether line elements should be drawn
+#' @param grid Boolean for whether grid lines should be drawn 
+#' @param map Boolean for a map object 
+#' @return ggplot2 style object
+#'
+#' @examples
+#' theme <- bhf_theme_map(grid=TRUE)
+#' @export
 bhf_theme_map=function(textsize=12){
 bhf_theme(textsize=textsize, map=TRUE)
 }
 
 
+#Wrappers for alternate spellings
+scale_color_bhf = function(...){
+scale_colour_bhf(...)
+}
 
-#The below are the old routines which are now contained within the bhf_theme function. 
-
-# bhf_bar_plot <- function( textsize = 12) {
-#   ggplot2::theme(
-#     plot.title = ggplot2::element_text(
-#       family = "bhf_beats_bold",
-#       size = textsize + 2, 
-#       color = "#191919"
-#     ),
-#     plot.subtitle = ggplot2::element_text(
-#       family = "bhf_beats_reg",
-#       size = textsize, 
-#       margin = ggplot2::margin(9, 0, 9, 0)
-#     ),
-#     legend.position = "right", 
-#     legend.text.align = 0, 
-#     legend.background = ggplot2::element_blank(),
-#     legend.title = ggplot2::element_blank(), 
-#     legend.key = ggplot2::element_blank(),
-#     legend.text = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize + 2,
-#       color = "#191919"
-#     ),
-#     axis.text = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize,
-#       color = "#191919"
-#     ),
-#     axis.ticks = ggplot2::element_blank(),
-#     axis.title.x = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.title.y = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.line = ggplot2::element_blank(),
-#     panel.grid.minor = ggplot2::element_blank(),
-#     panel.grid.major.y = ggplot2::element_line(color = "#e6e6e6"),
-#     panel.grid.major.x = ggplot2::element_blank(), 
-#     panel.background = ggplot2::element_blank(),
-#     strip.background = ggplot2::element_rect(fill = "white"),
-#     strip.text = ggplot2::element_text(family = "bhf_ginger_reg", 
-#     size = textsize, hjust = 0)
-#   )
-# }
-
-# bhf_bar_plot_grid <- function( textsize = 12) {
-#   ggplot2::theme(
-#     plot.title = ggplot2::element_text(
-#       family = "bhf_beats_bold",
-#       size = textsize + 2, 
-#       color = "#191919"
-#     ),
-#     plot.subtitle = ggplot2::element_text(
-#       family = "bhf_beats_reg",
-#       size = textsize, 
-#       margin = ggplot2::margin(9, 0, 9, 0)
-#     ),
-#     legend.position = "right", 
-#     legend.text.align = 0, 
-#     legend.background = ggplot2::element_blank(),
-#     legend.title = ggplot2::element_blank(), 
-#     legend.key = ggplot2::element_blank(),
-#     legend.text = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.text = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize,
-#       color = "#191919"
-#     ),
-#     axis.ticks = ggplot2::element_blank(),
-#     axis.title.x = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.title.y = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.line = ggplot2::element_line(color = "white"),
-#     panel.grid.minor = ggplot2::element_line(color = "white"),
-#     panel.grid.major.y = ggplot2::element_line(color = "white"),
-#     panel.grid.major.x = ggplot2::element_line(color = "white"), 
-#     panel.background = ggplot2::element_rect(color = "#e6e6e6"),
-#     strip.background = ggplot2::element_rect(fill = "white"),
-#     strip.text = ggplot2::element_text(family = "bhf_ginger_reg", 
-#     size = textsize, hjust = 0)
-#   )
-# }
-
-
-# bhf_line_plot <- function( textsize = 12) {
-#   ggplot2::theme(
-#     plot.title = ggplot2::element_text(
-#       family = "bhf_beats_bold",
-#       size = textsize + 2, 
-#       color = "#191919"
-#     ),
-#     plot.subtitle = ggplot2::element_text(
-#       family = "bhf_beats_reg",
-#       size = textsize, 
-#       margin = ggplot2::margin(9, 0, 9, 0)
-#     ),
-#     legend.position = "right", 
-#     legend.text.align = 0, 
-#     legend.background = ggplot2::element_blank(),
-#     legend.title = ggplot2::element_blank(), 
-#     legend.key = ggplot2::element_blank(),
-#     legend.text = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.text = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize,
-#       color = "#191919"
-#     ),
-#     axis.ticks = ggplot2::element_blank(),
-#     axis.title.x = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.title.y = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.line = ggplot2::element_blank(),
-#     panel.grid.minor = ggplot2::element_line(color = "#e6e6e6"),
-#     panel.grid.major.y = ggplot2::element_line(color = "#e6e6e6"),
-#     panel.grid.major.x = ggplot2::element_blank(), 
-#     panel.background = ggplot2::element_blank(),
-#     strip.background = ggplot2::element_rect(fill = "white"),
-#     strip.text = ggplot2::element_text(family = "bhf_ginger_reg", 
-#     size = textsize, 
-#     hjust = 0)
-#   )
-# }
-
-# bhf_line_plot_grid <- function( textsize = 12) {
-#   ggplot2::theme(
-#     plot.title = ggplot2::element_text(
-#       family = "bhf_beats_bold",
-#       size = textsize + 2, 
-#       color = "#191919"
-#     ),
-#     plot.subtitle = ggplot2::element_text(
-#       family = "bhf_beats_reg",
-#       size = textsize, 
-#       margin = ggplot2::margin(9, 0, 9, 0)
-#     ),
-#     legend.position = "right", legend.text.align = 0, legend.background = ggplot2::element_blank(),
-#     legend.title = ggplot2::element_text(
-#       family = "bhf_ginger_reg", size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     legend.key = ggplot2::element_blank(),
-#     legend.text = ggplot2::element_text(
-#       family = "bhf_ginger_reg", size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.text = ggplot2::element_text(
-#       family = "bhf_ginger_reg", size = textsize,
-#       color = "#191919"
-#     ),
-#     axis.ticks = ggplot2::element_blank(),
-#     axis.title.x = ggplot2::element_text(
-#       family = "bhf_ginger_reg", size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.title.y = ggplot2::element_text(
-#       family = "bhf_ginger_reg", size = textsize + 4,
-#       color = "#191919"
-#     ),
-#     axis.line = ggplot2::element_line(color = "white"),
-#     panel.grid.minor = ggplot2::element_line(color = "white"),
-#     panel.grid.major.y = ggplot2::element_line(color = "white"),
-#     panel.grid.major.x = ggplot2::element_line(color = "white"), 
-#     panel.background = ggplot2::element_rect(color = "#e6e6e6"),
-#     strip.background = ggplot2::element_rect(fill = "white"),
-#     strip.text = ggplot2::element_text(family = "bhf_ginger_reg", size = textsize, hjust = 0)
-#   )
-# }
-
-
-
-#' bhf_theme_map - The BHF plotting theme for maps
-#' @param textsize Size of text (defaults to 12)
-#' @param line Boolean for wether line elements should be drawn
-#' @param grid Boolean for wether grid lines should be drawn 
-#' @return ggplot2 style object
-#'
-#' @examples
-#' theme <- bhf_style(line=TRUE, grid=FALSE reverse = TRUE)
-#' @export
-# bhf_theme_map <- function(textsize = 12) {
-#   ggplot2::theme(
-#     plot.title = ggplot2::element_text(
-#       family = "bhf_beats_bold",
-#       size = textsize, 
-#       color = "#191919"
-#     ),
-#     plot.subtitle = ggplot2::element_text(
-#       family = "bhf_beats_reg",
-#       size = textsize, 
-#       margin = ggplot2::margin(9, 0, 9, 0)
-#     ),
-#     legend.position = "right", 
-#     legend.background = ggplot2::element_blank(),
-#     legend.title = ggplot2::element_blank(), 
-#     legend.key = ggplot2::element_blank(),
-#     legend.text = ggplot2::element_text(
-#       family = "bhf_ginger_reg", 
-#       size = textsize,
-#       color = "#191919",
-#       hjust=0
-#     ),
-#     axis.text = ggplot2::element_blank(), #
-#     axis.ticks = ggplot2::element_blank(),
-#     axis.title.x = ggplot2::element_blank(),#
-#     axis.title.y = ggplot2::element_blank(),#
-#     axis.line = ggplot2::element_blank(),#
-#     panel.grid.minor = ggplot2::element_blank(),#
-#     panel.grid.major.y = ggplot2::element_blank(),#
-#     panel.grid.major.x = ggplot2::element_blank(), #
-#     panel.background = ggplot2::element_blank(),#
-#     strip.background = ggplot2::element_rect(fill = "white"),
-#     strip.text = ggplot2::element_text(family = "bhf_ginger_reg", 
-#     size = textsize, 
-#     hjust = 0)
-#   )
-# }
+bhf_colorcode = function(...){
+bhf_colourcode(...)
+}

@@ -20,5 +20,5 @@ BHF Palettes
 Returns a BHF palette from the standard roster
 }
 \examples{
-temp1 <- bhf_pal("reds", reverse = TRUE)
+temp1 <- bhf_palette("bhf colours", reverse = TRUE)
 }
