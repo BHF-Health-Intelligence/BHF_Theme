@@ -1,5 +1,5 @@
 # This is the BHF ggplot script. It contains theme functions for ggplot. It also sets system colours/fonts
-
+# and provides functions to create BHF colour palettes and scales.
 
 #Check if the font files exist 
 if (Sys.info()["sysname"]=="Windows"){
@@ -8,88 +8,158 @@ if (Sys.info()["sysname"]=="Windows"){
   print("System unrecognized - fonts file cannot be found - specify location in bhf_theme.R for fonts")
 }
 
-if (file.exists(fontfile)){
-  sysfonts::font_add("bhf_beats_bold", file.path(fontfile,"BHFBeats-Bold.otf"))
-  sysfonts::font_add("bhf_beats_light", file.path(fontfile,"BHFBeats-Light.otf"))
-  sysfonts::font_add("bhf_beats_reg", file.path(fontfile,"BHFBeats-Regular.otf"))
-  sysfonts::font_add("bhf_ginger_bold", file.path(fontfile,"F37Ginger-Bold.otf"))
-  sysfonts::font_add("bhf_ginger_light", file.path(fontfile,"F37Ginger-Light.otf"))
-  sysfonts::font_add("bhf_ginger_reg", file.path(fontfile,"F37Ginger-Regular.otf"))
-} else { #Otherwise, do without 
+tryCatch({
+  if (file.exists(fontfile)){
+    sysfonts::font_add("bhf_beats_bold", file.path(fontfile,"BHFBeats-Bold.otf"))
+    sysfonts::font_add("bhf_beats_light", file.path(fontfile,"BHFBeats-Light.otf"))
+    sysfonts::font_add("bhf_beats_reg", file.path(fontfile,"BHFBeats-Regular.otf"))
+    sysfonts::font_add("bhf_ginger_bold", file.path(fontfile,"F37Ginger-Bold.otf"))
+    sysfonts::font_add("bhf_ginger_light", file.path(fontfile,"F37Ginger-Light.otf"))
+    sysfonts::font_add("bhf_ginger_reg", file.path(fontfile,"F37Ginger-Regular.otf"))
+  }
+}, error = function(e) {
   print(paste0("No BHF fonts found in ",
-  fontfile,
-  " - check the font location and try again"))
-}
+    fontfile,
+    " - check the font location and try again"))
+})
 
 #Define standard BHF colour palette
 bhf_colours <- c(
-  #"dark red" = "#8C0032", #Old dark red 
-  "medium red" = "#D20019",
-  "rubine red" = "#E71348",
-  "indigo" = "#500AB4",
-  #"pinkish" = "#FF3C64",
-  "light green" = "#19D79B",
-  "dark green" = "#00A06E",
-  "dark grey" = "#474E5A",
-
-  #Colours in keeping with new brand guidelines
-  "bright red" = "#FF0030",
-  "light pink" = "#FFB1C1",
-  "dark red" = "#ED002D",
-  "light pink" = "#FFB1C1",
-  "orange" = "#FF873C",
-  "pink" = "#FF3C64",
-  "light blue" = "#2D91FF",
-  "yellow" = "#FFBE32",
-  "white" = "#FFFFFF"
-)
+  `bright red` = "#ED002D",
+  `blue` = "#4090F6",
+  `yellow` = "#F3BB41",
+  `light pink` = "#EC6C89",
+  `light blue` = "#C7E1FB",
+  `green` = "#88E9CC",
+  `light yellow` = '#FBEDCB',
+  `purple` = '#510DB0',
+  `charcoal` = "#2D2D2D",
+  `beige` = "#FAF9F6",
+  `white` = "#FFFFFF"
+  )
 
 
-#' BHF Colours
+#' Get BHF Colour by Name
 #'
-#' Returns the colour
-#' @param colour list of names of BHF colours to return. Case insensitive
-#' @return BHF colour hex code
+#' Returns the hex code for a given BHF colour name. 
+#' @param x Name of the BHF colour (case insensitive)
+#' @return Hex code of the colour
 #' @examples
-#' colour <- bhf_colours("dark grey")
-#' colours <- bhf_colours(c("Bright Red", "Dark Red"))
+#' bhf_get_colour("blue")
 #' @export
-bhf_colourcode <- function(colour) {
-  # lapply(colour,function (x) {bhf_colours[tolower(x)]})[[1]]
-  unlist(lapply(colour,function (x) {bhf_colours[tolower(x)]}))
+get_colour_code <- function(colour_name) {
+  if (!tolower(colour_name) %in% names(bhf_colours)) {
+    stop(sprintf("Colour '%s' not found.", colour_name))
+  }
+  unname(bhf_colours[[tolower(colour_name)]])
 }
 
 
-# Define palettes
-bhf_palettes <- list(
-  #Old brand colours have been commented
-  "bhf colours old" = bhf_colourcode(c("Bright red", "Light blue", "Indigo", "Light green")),
-  "bhf colours" = bhf_colourcode(c("dark red", "light pink","orange","pink")),
-  "red to yellow old" = bhf_colourcode(c("Bright red", "Indigo", "Light blue", "Light green", "Yellow")),
-  "red to yellow" = bhf_colourcode(c("dark red","pink","light pink","orange","yellow")),
-  "bhf expanded colours" = bhf_colourcode(c(
-  "Bright red", "Light blue", "Indigo", "Yellow", "Dark green", "Orange", "Light green",
-  "Pink", "Dark grey", "Dark red")),
-  "bhf imd decile" = c(
-    "#ff0030", "#f62f47", "#ec445d", "#e15473", "#d46189", "#c46ca0", "#b176b7", "#9880cf",
-    "#7489e7", "#2d91ff"),
-  "bhf map colours" = c("#2d91ff", "#697bd9", "#8064b3", "#8c4d90", "#91326d", "#91064d"),
-  "bhf imd quintiles" = c("#ff0030", "#ea4862", "#cc6695", "#9f7dc9", "#2d91ff")
+#' Creates a palette based on the BHF colours
+#'
+#' Returns BHF palette based on the number of colours and categories.
+#' @param num_colours Number of desired colours
+#' @param num_cats Number of steps between colours
+#' @return Number of colours to use (integer)
+#' @examples
+#' create_palette(num_colours=5)
+#' create_palette(num_colours=3, num_steps=5, type="continuous")
+#' @export
+create_palette <- function(num_colours, num_steps=NULL,type="discrete") {
+
+  #By default we have as many categories as colours - and the distinction is only relevant for continuous palettes
+  if (missing(num_steps) || is.null(num_steps) || type=="discrete") {
+    num_steps <- num_colours
+  }
+
+#TODO: implement these
+#   `bhf imd decile` = c('#1d3f80', '#34538b', '#476995', '#597e9f', '#6b95a9', '#7fabb2', '#95c1bb', '#b0d7c6', '#d3ebd8', '#fbfcf4'),
+#   `bhf map colours` = c('#2d91ff', '#697bd9', '#8064b3', '#8c4d90', '#91326d', '#91064d'),
+#   `bhf imd quintiles` = c('#EE002D', '#ea4862', '#cc6695', '#9f7dc9', '#2d91ff')
+
+
+
+# Map number words to numeric values
+number_words <- c(
+  one = 1, two = 2, three = 3, four = 4, five = 5, six = 6, seven = 7,
+  eight = 8, nine = 9, ten = 10
 )
+
+# If num_colours is a string like "bhf_two_colours", extract the number word and reassign to num_colours
+if (is.character(num_colours)) {
+  split_str <- strsplit(num_colours, "_")[[1]]
+  if (length(split_str) >= 2 && tolower(split_str[2]) %in% names(number_words)) {
+    num_colours <- number_words[[tolower(split_str[2])]]
+  } else {
+    stop("Invalid num_colours format. Expected format like 'bhf_two_colours'.")
+  }
+}
+
+
+# If num_colours is a list or vector of colour names, use it directly
+if ((is.list(num_colours) || is.vector(num_colours)) && length(num_colours) > 1) {
+  palette_colours <- unname(sapply(num_colours, get_colour_code))
+} else {
+  # Otherwise, use a switch statement to return a palette based on num_colours
+  palette_colours <-
+    switch(as.character(num_colours),
+      `1` = unname(sapply(c("bright red"), get_colour_code)),
+      `2` = unname(sapply(c("Blue", "Yellow"), get_colour_code)),
+      `3` = unname(sapply(c("Blue", "Light pink", "Light blue"), get_colour_code)),
+      `4` = unname(sapply(c("Blue", "Light pink", "Yellow", "Green"), get_colour_code)),
+      `5` = unname(sapply(c("Blue", "Light pink", "Yellow", "Green", "Light blue"), get_colour_code)),
+      `6` = unname(sapply(c("Blue", "Light pink", "Yellow", "Green", "Light blue", "Light yellow"), get_colour_code)),
+      `7` = unname(sapply(c("Purple", "Blue", "Light pink", "Yellow", "Green", "Light blue", "Light yellow"), get_colour_code)),
+      # Default: return the first num_colours from bhf_colours
+      unname(bhf_colours[seq_len(min(num_colours, length(bhf_colours)))])
+    )
+}
+
+# Create the colour ramp based on the chosen palette 
+out = switch(type,
+             continuous = grDevices::colorRampPalette(palette_colours),
+             discrete = palette_colours)
+
+return(out)
+
+}
+
+
+# # Define specific palettes - these are as defined by the brand guidelines
+# bhf_palettes <- list(
+#   `bhf_two_colours` = bhf_colourcode("Blue", "Yellow"),
+#   `bhf_three_colours` = bhf_colourcode("Blue", "Light pink", "Light blue"),
+#   `bhf_four_colours` = bhf_colourcode("Blue", "Light pink", "Yellow", "Green"),
+#   `bhf_five_colours` = bhf_colourcode("Blue", "Light pink", "Yellow", "Green", "Light blue"),
+#   `bhf_six_colours` = bhf_colourcode("Blue", "Light pink", "Yellow", "Green", "Light blue", "Light yellow" ),
+#   `bhf_seven_colours` = bhf_colourcode("Purple","Blue", "Light pink", "Yellow", "Green", "Light blue", "Light yellow" ),
+#   `bhf imd decile` = c('#1d3f80', '#34538b', '#476995', '#597e9f', '#6b95a9', '#7fabb2', '#95c1bb', '#b0d7c6', '#d3ebd8', '#fbfcf4'),
+#   `bhf map colours` = c('#2d91ff', '#697bd9', '#8064b3', '#8c4d90', '#91326d', '#91064d'),
+#   `bhf imd quintiles` = c('#EE002D', '#ea4862', '#cc6695', '#9f7dc9', '#2d91ff')
+# )
+
 
 
 #' BHF Palettes
 #' Returns a BHF palette from the standard roster
-#' @param palette Type of palette - any of "bhf colours","red to yellow", "expanded colours", "imd decile", "map colours", "imd quintiles". Defaults to standard BHF colours
+#' @param palette Number of colours in palette - or any of "bhf_two_colours", "bhf_three_colours", etc. Defaults to standard BHF colours
 #' @param reverse Reverses the palette order
 #' @return Palette object
 #' @examples
 #' temp1 <- bhf_palette("bhf colours", reverse = TRUE)
 #' @export
-bhf_palette <- function(palette = "bhf colours", reverse = FALSE, ...) {
-  pal <- bhf_palettes[[tolower(palette)]]
+bhf_palette <- function(palette = "bhf_two_colours", reverse = FALSE, type=type ...) {
+  pal <- create_palette(palette, type=type)
   if (reverse) pal <- rev(pal)
   colorRampPalette(pal, ...)
+}
+
+#' Legacy alias for bhf_palette
+#' 
+#' @inheritParams bhf_palette
+#' @export
+bhf_pal <- function(...) {
+  bhf_palette(...)
 }
 
 
@@ -103,14 +173,14 @@ bhf_palette <- function(palette = "bhf colours", reverse = FALSE, ...) {
 #' @examples
 #' temp1 <- scale_colour_bhf("bhf colours", reverse = TRUE)
 #' @export
-scale_colour_bhf <- function(palette = "bhf colours", discrete = TRUE, reverse = FALSE, ...) {
+scale_colour_bhf <- function(palette = "bhf_two_colours", discrete = TRUE, reverse = FALSE, ...) {
 
   pal <- bhf_palette(palette = palette, reverse = reverse)
   
   if (discrete) {
-    ggplot2::discrete_scale("colour", palette = pal,...)
+    discrete_scale("colour", paste0("bhf_", palette), palette = pal, ...)
   } else {
-    ggplot2::scale_color_gradientn(colours = pal(256), ...)
+    scale_color_gradientn(colours = pal(256), ...)
   }
 }
 
@@ -125,13 +195,13 @@ scale_colour_bhf <- function(palette = "bhf colours", discrete = TRUE, reverse =
 #' @examples
 #' scale <- scale_fill_bhf("reds", reverse = TRUE)
 #' @export
-scale_fill_bhf <- function(palette = "bhf colours", discrete = TRUE, reverse = FALSE, ...) {
+scale_fill_bhf <- function(palette = "bhf_two_colours", discrete = TRUE, reverse = FALSE, ...) {
   pal <- bhf_palette(palette = palette, reverse = reverse)
 
   if (discrete) {
-    ggplot2::discrete_scale("fill", palette = pal, ...)
+    discrete_scale("fill", paste0("bhf_", palette), palette = pal, ...)
   } else {
-    ggplot2::scale_fill_gradient(colours = pal(256), ...)
+    scale_fill_gradient(colours = pal(256), ...)
   }
 }
 
@@ -147,13 +217,13 @@ scale_fill_bhf <- function(palette = "bhf colours", discrete = TRUE, reverse = F
 #' @examples
 #' scale <- scale_fill_bhf_cont("reds", reverse = TRUE)
 #' @export
-scale_fill_bhf_cont <- function(palette = "bhf colours", discrete = FALSE, reverse = TRUE, ...) {
+scale_fill_bhf_cont <- function(palette = "bhf_two_colours", discrete = FALSE, reverse = TRUE, ...) {
   pal <- bhf_palette(palette = palette, reverse = reverse)
 
   if (discrete) {
-    ggplot2::discrete_scale("fill", palette = pal, ...)
+    discrete_scale("fill", paste0("bhf_", palette), palette = pal, ...)
   } else {
-    ggplot2::scale_fill_gradientn(colours = pal(256), ...)
+    scale_fill_gradientn(colours = pal(256), ...)
   }
 }
 
@@ -167,7 +237,7 @@ scale_fill_bhf_cont <- function(palette = "bhf colours", discrete = FALSE, rever
 #' @return ggplot2 style object
 #'
 #' @examples
-#' theme <- bhf_style(line=TRUE, grid=FALSE reverse = TRUE)
+#' theme <- bhf_theme(line=TRUE, grid=FALSE reverse = TRUE)
 #' @export
 bhf_theme <- function(textsize = 12, grid=FALSE,line=TRUE,map=FALSE) {
   theme=ggplot2::theme(
@@ -206,8 +276,8 @@ bhf_theme <- function(textsize = 12, grid=FALSE,line=TRUE,map=FALSE) {
       size = textsize + 4,
       color = "#191919"
     ),
-    size = textsize, 
-    hjust = 0,
+    # size = textsize, 
+    # hjust = 0,
     strip.background = ggplot2::element_rect(fill = "white"),
     strip.text = ggplot2::element_text(family = "bhf_ginger_reg")
   )
@@ -240,7 +310,7 @@ bhf_theme <- function(textsize = 12, grid=FALSE,line=TRUE,map=FALSE) {
     strip.background = ggplot2::element_rect(fill = "white")
     )
   }
-  if (map==TRUE){
+  if (map==TRUE){ #If the plot is a map, remove the axis text and ticks
     theme=theme+ggplot2::theme(
     axis.text = ggplot2::element_blank(), #
     axis.ticks = ggplot2::element_blank(),
@@ -253,7 +323,7 @@ bhf_theme <- function(textsize = 12, grid=FALSE,line=TRUE,map=FALSE) {
     panel.background = ggplot2::element_blank()
     )
   }
-  theme
+  return(theme)
 }
 
 

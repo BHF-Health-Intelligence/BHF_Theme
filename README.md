@@ -2,18 +2,9 @@
 Contains the custom BHF theme package for ggplot2
 
 # How to use 
-Download the package by using install_github("BHF-Health-Intelligence/BHF_Theme")
+Download the package by using devtools::install_github("BHF-Health-Intelligence/BHF_Theme")
 
-The themes work with ggplot. There are 3 main themes, one for a bar plot, one for a line plot and then one for maps. But you can use the bar plot and the line plot for other graphs as required. 
-
-# Bar plots
-Within bar plots there are two themes. One called bhf_bar_plot which has a plain white background or one called bhf_bar_plot_grid which contains a light grey gridded background. 
-
-# Line plots
-Within line plots there are two themes. One called bhf_line_plot which has a plain white background or one called bhf_line_plot_grid which contains a light grey gridded background. 
-
-# Maps
-bhf_style_maps provides a blank background with formatting for BHF text when labelling areas/variables for the map 
+The themes work with ggplot. There is one main function called `bhf_style` which will apply the BHF theme to your ggplot. You can use this function to apply the standard BHF theme to your ggplot by using `+ bhf_style()` at the end of your ggplot code. Boolean arguments grid, line and map can be specified as required to modify the theme and emulate the behaviour of previous versions of the package. 
 
 # Filling colours 
 For continous variables use scale_color_bhf(palette = ) and for discrete variables use scale_fill_bhf(palette = )
